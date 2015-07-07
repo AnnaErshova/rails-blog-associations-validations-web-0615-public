@@ -1,3 +1,4 @@
+require 'pry'
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
@@ -24,6 +25,7 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
+    #binding.pry
     @post = Post.new(post_params)
 
     respond_to do |format|
@@ -61,7 +63,8 @@ class PostsController < ApplicationController
     end
   end
 
-  private
+  # strong params means we are creating a private method and params.prequire(resouce_name).permit(resource_name)
+  private # protecting the params that we are allowing to touch our database
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
@@ -69,6 +72,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:name)
+      params.require(:post).permit(:name, :content, :tag_ids => []) # permitting as an empty array; because the default is string
     end
 end
